@@ -1,10 +1,9 @@
-from typing import Dict, Optional, Any
+from typing import Optional
 
 # FastAPI
 from fastapi import FastAPI
-from fastapi import Body
-from fastapi import Query
-from fastapi import Path
+from fastapi import status
+from fastapi import Body, Path, Query
 
 # Starlette
 from starlette.responses import RedirectResponse
@@ -14,15 +13,25 @@ from app.models.person import Person, PersonOut
 
 app: FastAPI = FastAPI()
 
-@app.get("/")
+@app.get(
+    path="/",
+    status_code=status.HTTP_200_OK
+)
 def root():
     return RedirectResponse(url="/docs/")
 
-@app.post("/person/new", response_model=PersonOut)
+@app.post(
+    path="/person/new",
+    response_model=PersonOut,
+    status_code=status.HTTP_201_CREATED
+)
 def create_person(person: Person = Body(...)):
     return person
 
-@app.get("/person/detail")
+@app.get(
+    path="/person/detail",
+    status_code=status.HTTP_200_OK
+)
 def show_person(
     name: Optional[str] = Query(
         None,
@@ -40,7 +49,10 @@ def show_person(
     return {name: age}
 
 
-@app.get("/person/detail/{person_id}")
+@app.get(
+    path="/person/detail/{person_id}",
+    status_code=status.HTTP_200_OK
+)
 def show_person(
     person_id: int = Path(
         ...,
@@ -52,7 +64,10 @@ def show_person(
 ):
     return { person_id: "It exists!"}
 
-@app.put("/person/{person_id}")
+@app.put(
+    path="/person/{person_id}",
+    status_code=status.HTTP_204_NO_CONTENT
+)
 def update_person(
     person_id: int = Path(
         ...,
