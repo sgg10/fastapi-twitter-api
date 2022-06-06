@@ -3,13 +3,14 @@ from typing import Optional
 # FastAPI
 from fastapi import FastAPI
 from fastapi import status
-from fastapi import Body, Path, Query, Form
+from fastapi import Body, Path, Query, Form, Header, Cookie
 
 # Starlette
 from starlette.responses import RedirectResponse
 
 # Pydantic
 from pydantic import SecretStr
+from pydantic import EmailStr
 
 # Models
 from app.models.person import Person, PersonOut
@@ -84,6 +85,8 @@ def update_person(
     result = person.dict()
     return result
 
+# Forms
+
 @app.post(
     path="/login",
     response_model=LoginOut,
@@ -96,3 +99,28 @@ def login(
     print(username, password)
     return LoginOut(username=username, message="Login Succesfuly!")
 
+# Cookies and Headers parameters
+@app.post(
+    path="/contact",
+    status_code=status.HTTP_200_OK
+)
+def contact(
+    first_name: str = Form(
+        ...,
+        max_length=20,
+        min_length=1
+    ),
+    last_name: str = Form(
+        ...,
+        max_length=20,
+        min_length=1
+    ),
+    email: EmailStr = Form(...),
+    message: str = Form(
+        ...,
+        min_length=20
+    ),
+    user_agent: Optional[str] = Header(default=None),
+    ads: Optional[str] = Cookie(default=None)
+):
+    return user_agent
