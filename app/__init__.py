@@ -3,13 +3,17 @@ from typing import Optional
 # FastAPI
 from fastapi import FastAPI
 from fastapi import status
-from fastapi import Body, Path, Query
+from fastapi import Body, Path, Query, Form
 
 # Starlette
 from starlette.responses import RedirectResponse
 
+# Pydantic
+from pydantic import SecretStr
+
 # Models
 from app.models.person import Person, PersonOut
+from app.models.login import LoginOut
 
 app: FastAPI = FastAPI()
 
@@ -79,3 +83,16 @@ def update_person(
 ):
     result = person.dict()
     return result
+
+@app.post(
+    path="/login",
+    response_model=LoginOut,
+    status_code=status.HTTP_200_OK
+)
+def login(
+    username: str = Form(...),
+    password: SecretStr = Form(...)
+):
+    print(username, password)
+    return LoginOut(username=username, message="Login Succesfuly!")
+
