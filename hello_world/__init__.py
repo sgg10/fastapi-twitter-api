@@ -23,8 +23,8 @@ from pydantic import SecretStr
 from pydantic import EmailStr
 
 # Models
-from app.models.person import Person, PersonOut
-from app.models.login import LoginOut
+from hello_world.models.person import Person, PersonOut
+from hello_world.models.login import LoginOut
 
 app: FastAPI = FastAPI()
 
