@@ -3,7 +3,6 @@ from typing import Optional
 from datetime import date
 
 from pydantic import BaseModel
-from pydantic import SecretStr
 from pydantic import EmailStr
 from pydantic import Field
 from pydantic import validator
@@ -35,7 +34,7 @@ class User(BaseUser):
         return v
 
 class UserLogin(BaseUser):
-    password: SecretStr = Field(
+    password: str = Field(
         ...,
         min_length=8,
         max_length=32,
