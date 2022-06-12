@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from pydantic import SecretStr
 from pydantic import EmailStr
 from pydantic import Field
-from pydantic import ValidationError, validator
+from pydantic import validator
 
 class BaseUser(BaseModel):
     user_id: UUID = Field(...)
